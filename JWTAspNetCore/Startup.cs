@@ -37,8 +37,8 @@ namespace JWTAspNetCore
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            X509Certificate2 cert = new X509Certificate2("C:\\Repos\\JWTAspNetCore\\JWTAspNetCore\\jwtselfsignedcert.pfx", "qwer1234");
-            SecurityKey key = new X509SecurityKey(cert); //well, seems to be that simple
+            X509Certificate2 cert = new X509Certificate2("C:\\Repos\\JWTAspNetCore\\JWTAspNetCore\\JWTValidationCert.cer");
+            SecurityKey key = new X509SecurityKey(cert);
 
             services.AddAuthentication(x =>
             {
@@ -80,6 +80,7 @@ namespace JWTAspNetCore
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

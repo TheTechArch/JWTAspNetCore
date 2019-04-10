@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JWTAspNetCore.Models;
 using JWTAspNetCore.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,17 +26,20 @@ namespace JWTAspNetCore.Controllers
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
-
             AuthenticationService service = new AuthenticationService();
-            service.GetToken("asdf", "SADFSDAf");
-
             return "value";
         }
 
         // POST: api/Authentication
         [HttpPost]
-        public void Post([FromBody] string value)
+        public string Post([FromBody] AuthenticationRequest authenticationRequest)
         {
+            AuthenticationService service = new AuthenticationService();
+            string token = service.GetToken(authenticationRequest.userName, authenticationRequest.passWord);
+
+            service.ValidateAndDecode(token);
+
+            return token;
         }
 
         // PUT: api/Authentication/5
